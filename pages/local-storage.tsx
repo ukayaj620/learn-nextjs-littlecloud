@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { ChangeEvent, FormEvent, useState } from 'react'
+import { LOCAL_STORAGE_KEY } from '../constants/local-storage'
 
 const Home: NextPage = () => {
   const [username, setUsername] = useState('')
@@ -12,19 +13,11 @@ const Home: NextPage = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    // store username in server
-    fetch('/api/profile', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-      }),
-    }).then(() => {
-      // redirect to blogs
-      router.push('/blogs')
-    })
+    // store username in local storage
+    window.localStorage.setItem(LOCAL_STORAGE_KEY.USERNAME, username)
+
+    // redirect to blogs
+    router.push('/blogs')
   }
 
   return (
